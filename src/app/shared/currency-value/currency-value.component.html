@@ -1,0 +1,19 @@
+<ng-container *ngIf="(result$ | async) as result; else ratesPending">
+    <ng-container *ngIf="result.value !== undefined; else rateNotAvailable">
+        <ng-container *ngIf="result.approximation">≈</ng-container>
+        <ng-container ngSwitch="{{result.unit}}">
+            <ng-container *ngSwitchCase="'LTZ'">{{result.value | number:'1.0-8'}} LTZ</ng-container>
+            <ng-container *ngSwitchCase="'LTZ_bits'">
+                {{result.value | number:'1.0-2'}} {{result.value === 1? 'bit' : 'bits'}} (LTZ)
+            </ng-container>
+            <ng-container *ngSwitchCase="'LTZ_satoshis'">
+                {{result.value | number:'1.0-0'}} {{result.value === 1? 'satoshi' : 'satoshis'}} (LTZ)
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+                {{displaySymbol(result.unit)}}{{result.value | currency:result.unit:''}} {{result.unit}}
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</ng-container>
+<ng-template #rateNotAvailable>✘ {{displayAs}}</ng-template>
+<ng-template #ratesPending></ng-template>
